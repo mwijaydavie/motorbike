@@ -8,12 +8,12 @@ Node.js 22.12+:
 
 ```sh
 npm ci
-npm run dev     # Vite development server
-npm test        # Type-check, build, and verify the generated HTML and links
+npm run dev     # Vite development server, with the sample admin workspace
+npm test        # Build and verify storefront pages and operations rules
 npm run preview # Serve the production build from dist/
 ```
 
-No API keys or back end are required. The build pre-renders a separate HTML document for each page and a custom 404. Direct links, refresh and browser Back work without a client-side router. Navigation and model details are available in the default English HTML before React loads; JavaScript enables Kiswahili, filters, the parts picker and the message composer.
+The public storefront works without API keys or a back end. The build pre-renders a separate HTML document for each page and a custom 404. Direct links, refresh and browser Back work without a client-side router. Navigation and model details are available in the default English HTML before React loads; JavaScript enables Kiswahili, filters, the parts picker and the message composer.
 
 | URL | Purpose |
 | --- | --- |
@@ -23,8 +23,13 @@ No API keys or back end are required. The build pre-renders a separate HTML docu
 | `/parts` | Parts finder, optional `?bike=fh-200-10` preselection, and the Garage photo inspector |
 | `/story` | About the business and the short campaign film |
 | `/contact` | Inquiry composer; supports `?topic=parts&bike=fh-200-10&part=drive` |
+| `/admin` | Bilingual staff workspace for motorcycle stock, public pricing and manual inquiry follow-up |
 
-Old links such as `/#story`, `/#garage` and `/#bike-fh-200-10` are redirected in the browser to their new destinations. The inquiry composer prepares a message locally: the visitor copies it and sends it through the official Instagram DM link. The site itself does not send or store inquiries.
+Old links such as `/#story`, `/#garage` and `/#bike-fh-200-10` are redirected in the browser to their new destinations. The inquiry composer prepares a message locally: the visitor copies it and sends it through the official Instagram DM link. The composer itself does not send or store inquiries. Staff can record and follow up on those requests manually in the private workspace.
+
+## Operations workspace
+
+Use `/admin` with the explicitly isolated [demo build and sample data](docs/operations.md#kuanza-na-demo). The [operations guide](docs/operations.md) explains enabling staff sign-in and persistent Redis storage, and how inventory changes reach the storefront. Without the server configuration, the production admin stays locked and the static catalogue still works.
 
 ## Motion and reference demos
 
@@ -37,7 +42,7 @@ See the [motion reference kit](docs/motion-reference-kit.md) for GitHub/GitLab s
 ## Preview or deploy
 
 - After `npm run build`, run `npm run preview` to check the production files locally. On a static host, enable extensionless `.html` URLs and set `404.html` as the error document. Do not add a catch-all rewrite to `index.html`.
-- The existing public site is [motorbike-omega.vercel.app](https://motorbike-omega.vercel.app/). [`vercel.json`](vercel.json) sets the Vite preset, `npm ci`, `npm run build`, `dist/`, and `cleanUrls`. Keep the Vercel root directory at the repository root. No environment variables are required; `SITE_URL` can override the public origin used for social images if the domain changes.
+- The existing public site is [motorbike-omega.vercel.app](https://motorbike-omega.vercel.app/). [`vercel.json`](vercel.json) sets the Vite preset, `npm ci`, `npm run build`, `dist/`, and `cleanUrls`. Keep the Vercel root directory at the repository root. The static storefront needs no environment variables; `SITE_URL` can override the public origin used for social images. Configure the separate server-only operations variables before enabling staff access.
 - For an **existing, initialized** Vercel project connected to this repo, push only the approved work branch to get a [Preview deployment](https://vercel.com/docs/deployments/environments#preview-environment-pre-production). Check the generated URL and protection settings before sharing. Do not merge, promote, or add a production domain for a preview.
 - For a **new** project, confirm the project and first-deployment scope before importing or publishing. [Vercel treats the first deployment as Production](https://vercel.com/docs/deployments/environments#first-deployment); use a separate review project if an isolated first share is approved. Unpushed Arena edits are not available to a Vercel Git build.
 

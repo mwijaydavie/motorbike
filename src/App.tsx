@@ -13,6 +13,8 @@ import { BikePage, MotorcyclesPage } from './pages/Motorcycles';
 import { PartsPage } from './pages/Parts';
 import { StoryPage } from './pages/Story';
 import { ContactPage } from './pages/Contact';
+import { PublicStockProvider } from './ops/public';
+import { DEMO_MODE } from './ops/mode';
 
 function FilmDialog({ close, t }: { close: () => void; t: Locale['t'] }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -80,16 +82,19 @@ export function App({ page }: { page: Page }) {
     <a href="#main-content" className="skip-link">{t('Skip to content', 'Ruka hadi maudhui')}</a>
     <Header page={page} changeLanguage={changeLanguage} {...locale} />
     <main id="main-content" ref={main} tabIndex={-1} className={`page page-${page.kind}`}>
-      {page.kind === 'home' && <HomePage {...locale} openFilm={openFilm} />}
-      {page.kind === 'motorcycles' && <MotorcyclesPage {...locale} />}
-      {page.kind === 'bike' && <BikePage {...locale} bike={page.bike} />}
-      {page.kind === 'parts' && <PartsPage {...locale} />}
-      {page.kind === 'story' && <StoryPage {...locale} openFilm={openFilm} />}
-      {page.kind === 'contact' && <ContactPage {...locale} />}
-      {page.kind === 'not-found' && <>
-        <Chapter number="404" label={t('Page not found', 'Ukurasa haupatikani')} title={t('OFF THE MAP.', 'NJE YA RAMANI.')} note={t('We couldn’t find this page. Head back to the lineup to get on the road again.', 'Hatukupata ukurasa huu. Rudi kwenye katalogi uchague pikipiki.')} t={t} />
-        <div className="paper-section error-links"><div className="frame"><a className="button button-dark" href="/motorcycles">{t('Explore motorcycles', 'Tazama pikipiki')} <ArrowUpRight aria-hidden="true" size={17} /></a><a className="text-link" href="/">{t('Back to home', 'Rudi nyumbani')} <ArrowUpRight aria-hidden="true" size={15} /></a></div></div>
-      </>}
+      {DEMO_MODE && <p className="demo-catalogue-banner"><span>{t('Demo storefront · sample inventory, not live stock.', 'Tovuti ya mfano · stock ya majaribio, si stock halisi.')}</span><a href="/admin">{t('Open admin demo', 'Fungua demo ya usimamizi')}</a></p>}
+      <PublicStockProvider enabled={page.kind === 'home' || page.kind === 'motorcycles' || page.kind === 'bike'}>
+        {page.kind === 'home' && <HomePage {...locale} openFilm={openFilm} />}
+        {page.kind === 'motorcycles' && <MotorcyclesPage {...locale} />}
+        {page.kind === 'bike' && <BikePage {...locale} bike={page.bike} />}
+        {page.kind === 'parts' && <PartsPage {...locale} />}
+        {page.kind === 'story' && <StoryPage {...locale} openFilm={openFilm} />}
+        {page.kind === 'contact' && <ContactPage {...locale} />}
+        {page.kind === 'not-found' && <>
+          <Chapter number="404" label={t('Page not found', 'Ukurasa haupatikani')} title={t('OFF THE MAP.', 'NJE YA RAMANI.')} note={t('We couldn’t find this page. Head back to the lineup to get on the road again.', 'Hatukupata ukurasa huu. Rudi kwenye katalogi uchague pikipiki.')} t={t} />
+          <div className="paper-section error-links"><div className="frame"><a className="button button-dark" href="/motorcycles">{t('Explore motorcycles', 'Tazama pikipiki')} <ArrowUpRight aria-hidden="true" size={17} /></a><a className="text-link" href="/">{t('Back to home', 'Rudi nyumbani')} <ArrowUpRight aria-hidden="true" size={15} /></a></div></div>
+        </>}
+      </PublicStockProvider>
     </main>
     <Footer {...locale} />
     {film && <FilmDialog close={closeFilm} t={t} />}

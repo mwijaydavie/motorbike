@@ -2,6 +2,8 @@ import { ArrowUpRight, Instagram } from 'lucide-react';
 import { categories } from '../content';
 import type { Bike } from '../content';
 import { bikePath } from '../site';
+import { availabilityLabels, money } from '../ops/labels';
+import { usePublicModels } from '../ops/public';
 import type { Locale } from './Primitives';
 
 export function visualLabel(bike: Bike, t: Locale['t']) {
@@ -22,17 +24,23 @@ export function BikeVisual({ bike, lang, t, detail = false }: Locale & { bike: B
 }
 
 export function BikeGrid({ items, lang, t, animate = false }: Locale & { items: Bike[]; animate?: boolean }) {
+  const inventory = usePublicModels();
   return <div className={`bike-grid${animate ? ' bike-grid-refresh' : ''}`}>
-    {items.map((bike, index) => <article className="bike-card" data-reveal key={bike.id} style={{ '--order': index % 3 } as React.CSSProperties}>
-      <BikeVisual bike={bike} lang={lang} t={t} />
-      <div className="bike-copy">
-        <div>
-          <span className="bike-brand">{bike.brand ?? 'Pikipiki Altraware'}</span>
-          <h3 className="display bike-name"><a className="bike-link" href={bikePath(bike.id)}>{bike.name}</a></h3>
-          <p className="bike-meta">{bike.cc[lang]}<i aria-hidden="true" />{bike.price ? t('See posted price', 'Tazama bei iliyotajwa') : t('Ask for price', 'Uliza bei')}</p>
+    {items.map((bike, index) => {
+      const stock = inventory[bike.id];
+      const price = stock?.priceTzs != null ? money(stock.priceTzs) : !stock && bike.price ? t('See posted price', 'Tazama bei iliyotajwa') : t('Ask for price', 'Uliza bei');
+      return <article className="bike-card" data-reveal key={bike.id} style={{ '--order': index % 3 } as React.CSSProperties}>
+        <BikeVisual bike={bike} lang={lang} t={t} />
+        <div className="bike-copy">
+          <div>
+            <span className="bike-brand">{bike.brand ?? 'Pikipiki Altraware'}</span>
+            <h3 className="display bike-name"><a className="bike-link" href={bikePath(bike.id)}>{bike.name}</a></h3>
+            <p className="bike-meta">{bike.cc[lang]}<i aria-hidden="true" />{price}</p>
+            {stock && stock.availability !== 'ask' && <span className="bike-stock-tag" data-availability={stock.availability}>{availabilityLabels[stock.availability][lang]}</span>}
+          </div>
+          <span className="bike-arrow"><ArrowUpRight size={22} strokeWidth={1.6} aria-hidden="true" /></span>
         </div>
-        <span className="bike-arrow"><ArrowUpRight size={22} strokeWidth={1.6} aria-hidden="true" /></span>
-      </div>
-    </article>)}
+      </article>;
+    })}
   </div>;
 }
