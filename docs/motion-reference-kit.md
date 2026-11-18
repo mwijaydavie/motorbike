@@ -28,11 +28,12 @@ Mifano yenye **source + demo**, kwa ajili ya kujifunza na kumpa AI agent referen
 
 ## 03 / Tumejaribu nini kwa Altraware?
 
-Kwenye hero, bonyeza **→ / ←** karibu na **01 / 02**. *Gravel Shift* ni mpito wa vumbi kati ya picha mbili: WebGL inachora layer ya picha, GLSL inatengeneza ukingo, na GSAP inaendesha progress. Hii si model ya 3D.
+Fungua Home bila kubonyeza kitu: headline inapanda, picha inatulia taratibu, na mwanga unapita kwenye hero. Kisha fungua Motorcycles au Spare Parts kupitia menu; browser inayotumia cross-document View Transitions itaonyesha mpito wa diagonal. Zingine zinafungua ukurasa kwa kawaida, bila kubadili URL au Back behavior.
 
-- [`src/motion/gravel.ts`](../src/motion/gravel.ts): shader, object-fit crop, textures na tween. Canvas ina kikomo cha pixels; haichori frames wakati hakuna transition.
-- [`src/motion/use-scene-shift.ts`](../src/motion/use-scene-shift.ts): lazy import, decode, cancel na fallback. Picha ya kawaida ndiyo inayofanya kazi kila wakati; bila WebGL kuna CSS fade, na reduced motion hubadilisha picha bila effect.
-- React bado inasimamia catalogue, hash links na dialogs. Barba.js inafaa kwa site yenye kurasa tofauti, si kufungua dialog hapa. GSAP inatosha kuendesha mpito huu; hakuna haja ya kuongeza Anime.js na tween.js kwa kazi ileile.
+- [`src/motion/motion.css`](../src/motion/motion.css) na [`use-scroll-motion.ts`](../src/motion/use-scroll-motion.ts): hero na chapter entrances, mpito wa kurasa, na `IntersectionObserver` kwa sections zinazokuja unaposogeza ukurasa. Motion hii haihitaji WebGL na inazimwa kwa reduced motion.
+- Hero bado ina **→ / ←** karibu na **01 / 02** kwa *Gravel Shift*, mpito wa vumbi kati ya picha mbili. [`gravel.ts`](../src/motion/gravel.ts) ina shader, crop, textures na tween. Canvas ina kikomo cha pixels; haichori frames wakati hakuna transition.
+- [`use-scene-shift.ts`](../src/motion/use-scene-shift.ts): lazy import, decode, cancel na fallback. Bila WebGL kuna CSS fade; reduced motion hubadilisha picha moja kwa moja. Hii si model ya 3D.
+- Kurasa zinatengenezwa mapema kama HTML tofauti, zikiunganishwa kwa `<a>` za kawaida. React inasimamia interactions za kila ukurasa. Hakuna haja ya kuongeza Barba, Anime.js, tween.js au Three.js kwa motion iliyopo.
 - Hatua ya 3D inayofuata: pata **GLB/glTF iliyoidhinishwa ya model sahihi**, kisha weka viewer inayofunguka mteja akichagua kuiona. Bila asset halisi, picha zenye maelezo au photo spin ya frame halisi ni bora kuliko model ya kubuniwa.
 
 ### Brief ya kumpa agent

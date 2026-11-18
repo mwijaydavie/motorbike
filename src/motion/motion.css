@@ -1,0 +1,62 @@
+/* All motion starts from readable, laid out HTML. No animation is
+   required to use a link, search, or send an inquiry. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  :root { scroll-behavior: smooth; }
+  .site-header { view-transition-name: altraware-masthead; }
+  ::view-transition-group(root) { animation-duration: .46s; }
+  ::view-transition-old(root) { animation: .43s ease-in-out both road-depart; mix-blend-mode: normal; }
+  ::view-transition-new(root) { animation: .46s var(--ease) both road-arrive; mix-blend-mode: normal; }
+  ::view-transition-group(altraware-masthead), ::view-transition-new(altraware-masthead) { animation: none; }
+  ::view-transition-old(altraware-masthead) { display: none; }
+
+  .hero-scene { animation: campaign-focus 1.65s var(--ease) both; }
+  .hero-sweep::after {
+    content: '';
+    position: absolute;
+    top: -24%;
+    bottom: -24%;
+    width: clamp(100px, 19vw, 280px);
+    left: 0;
+    background: linear-gradient(90deg, transparent, #ebff9247 50%, #f7ffc073 68%, transparent 70%);
+    mix-blend-mode: screen;
+    animation: campaign-sweep 1.17s .1s ease-in-out both;
+  }
+  .title-mask > span { animation: title-rise .9s var(--ease) both; }
+  .title-mask:first-child > span { animation-delay: .08s; }
+  .title-mask:last-child > span { animation-delay: .2s; }
+  .hero-eyebrow { animation: detail-in .66s .08s var(--ease) both; }
+  .hero-lead { animation: detail-in .69s .27s var(--ease) both; }
+  .hero-buttons { animation: detail-in .69s .38s var(--ease) both; }
+  .hero-bottom, .hero-register { animation: detail-in .64s .4s var(--ease) both; }
+  .hero-id-rule { transform-origin: left; animation: route-line .9s .49s var(--ease) both; }
+  .hero-controls[data-shifting='true'] .scene-count i { transform-origin: left; animation: route-line .85s linear both; }
+
+  .chapter-title, .product-title { animation: chapter-in .72s .025s var(--ease) both; }
+  :is(.chapter-note, .product-visual, .parts-art, .story-play) { animation: detail-in .7s .09s var(--ease) both; }
+  .chapter-marker { animation: marker-in .82s var(--ease) both; }
+  .film-dialog[open] { animation: detail-in .25s var(--ease) both; }
+  .bike-grid-refresh .bike-card { animation: detail-in .48s calc(var(--order, 0) * 45ms) var(--ease) both; }
+  [data-arrival='waiting']:not(:focus-within) { opacity: .36; transform: translateY(27px); }
+  [data-arrival='in'] { animation: scroll-rise .66s calc(var(--order, 0) * 64ms) var(--ease) both; }
+  [data-arrival]:focus-within { animation: none; opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .inspection-rig { transform: none; }
+}
+@keyframes title-rise { from { opacity: .32; transform: translateY(104%); } to { opacity: 1; transform: translateY(0); } }
+@keyframes campaign-focus { from { transform: scale(1.075); opacity: .67; } to { transform: scale(1); opacity: 1; } }
+@keyframes campaign-sweep {
+  0% { transform: translateX(-32vw) skewX(-28deg); opacity: 0; }
+  23%, 70% { opacity: .9; }
+  100% { transform: translateX(123vw) skewX(-28deg); opacity: 0; }
+}
+@keyframes detail-in { from { opacity: .34; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes route-line { from { transform: scaleX(.05); } to { transform: scaleX(1); } }
+@keyframes chapter-in { from { opacity: .3; clip-path: inset(0 0 74% 0); transform: translateY(11px); } to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } }
+@keyframes marker-in { from { opacity: .25; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+@keyframes scroll-rise { from { opacity: .36; transform: translateY(27px); } to { opacity: 1; transform: none; } }
+@keyframes road-depart { to { opacity: .57; transform: translateX(-13px); } }
+@keyframes road-arrive { from { clip-path: polygon(100% 0, 138% 0, 100% 100%, 63% 100%); } to { clip-path: polygon(0 0, 138% 0, 100% 100%, 0 100%); } }
