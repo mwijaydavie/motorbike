@@ -1,8 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { renderDocument, sitePaths } from '../.vite/prerender/entry-static.js';
+import { dirname, join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
-const template = await readFile('dist/index.html', 'utf8');
+const outDir = process.argv[2] ?? 'dist';
+const { renderDocument, sitePaths } = await import(pathToFileURL(resolve(process.argv[3] ?? '.vite/prerender/entry-static.js')).href);
+const demo = outDir === '.vite/demo';
+const template = await readFile(join(outDir, 'index.html'), 'utf8');
 const publicSite = process.env.SITE_URL ?? 'https://motorbike-omega.vercel.app';
 const root = '<div id="root"></div>';
 const metaBlock = /<!--page-meta:start-->[\s\S]*?<!--page-meta:end-->/;
@@ -22,9 +25,9 @@ for (const path of sitePaths) {
       `<link rel="preload" as="image" href="${media[0]}" media="(width > 700px)">`,
       `<link rel="preload" as="image" href="${media[1]}" media="(width <= 700px)">`,
     ] : []),
-    ...(kind === 'not-found' ? ['<meta name="robots" content="noindex">'] : []),
+    ...(demo || kind === 'not-found' ? ['<meta name="robots" content="noindex">'] : []),
   ].join('\n    ');
-  const output = join('dist', path === '/' ? 'index.html' : `${path.slice(1)}.html`);
+  const output = join(outDir, path === '/' ? 'index.html' : `${path.slice(1)}.html`);
   await mkdir(dirname(output), { recursive: true });
   await writeFile(output, template.replace(metaBlock, () => metadata).replace(root, () => `<div id="root" data-document="${escape(path)}">${html}</div>`));
 }

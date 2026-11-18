@@ -3,7 +3,7 @@ import { extname, resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import { normalizePath, resolvePage } from './src/site.ts';
 
-export default defineConfig(({ isPreview }) => ({
+export default defineConfig(({ isPreview, isSsrBuild }) => ({
   // Dev resolves pages from its shared shell; preview serves the built HTML.
   appType: isPreview ? 'mpa' : 'spa',
   server: { allowedHosts: ['.e2b.app'] },
@@ -18,7 +18,7 @@ export default defineConfig(({ isPreview }) => ({
         const accept = req.headers.accept ?? '*/*';
         if (extname(url.pathname) || !(accept.includes('text/html') || accept.includes('*/*'))) return next();
         const path = normalizePath(url.pathname);
-        if (resolvePage(path).kind !== 'not-found') {
+        if (path === '/admin' || resolvePage(path).kind !== 'not-found') {
           if (path === url.pathname) return next();
           res.writeHead(308, { Location: `${path}${url.search}` });
           res.end();
@@ -31,7 +31,11 @@ export default defineConfig(({ isPreview }) => ({
     },
   }],
   build: {
-    rolldownOptions: { output: { comments: { legal: true } } },
+    rolldownOptions: {
+      // Leave Vite's SSR entry intact; only the browser build gets both HTML shells.
+      ...(!isSsrBuild && { input: { storefront: resolve('index.html'), operations: resolve('admin.html') } }),
+      output: { comments: { legal: true } },
+    },
     license: { fileName: 'third-party-licenses.txt' },
   },
 }));

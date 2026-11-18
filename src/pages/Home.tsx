@@ -5,6 +5,7 @@ import { BikeGrid } from '../components/Bikes';
 import { Eyebrow, Mark } from '../components/Primitives';
 import type { Locale } from '../components/Primitives';
 import { useSceneShift } from '../motion/use-scene-shift';
+import { usePublicModels } from '../ops/public';
 
 export type FilmTrigger = (element: HTMLElement) => void;
 const scenes = [
@@ -62,6 +63,8 @@ function Hero({ lang, t, openFilm }: Locale & { openFilm: FilmTrigger }) {
 }
 
 export function HomePage({ lang, t, openFilm }: Locale & { openFilm: FilmTrigger }) {
+  const inventory = usePublicModels();
+  const featured = bikes.filter(bike => inventory[bike.id]?.listed !== false).slice(0, 3);
   return <>
     <Hero lang={lang} t={t} openFilm={openFilm} />
     <section className="ride-strip" aria-labelledby="ride-strip-title">
@@ -78,7 +81,7 @@ export function HomePage({ lang, t, openFilm }: Locale & { openFilm: FilmTrigger
           <div><Eyebrow index="01">{t('Selected motorcycles', 'Pikipiki teule')}</Eyebrow><h2 className="display section-title" id="home-lineup-title">{t('MEET THE LINEUP.', 'CHAGUA PIKIPIKI.')}</h2></div>
           <a className="button button-outline-dark" href="/motorcycles">{t('See all motorcycles', 'Tazama pikipiki zote')} <ArrowUpRight aria-hidden="true" size={17} /></a>
         </div>
-        <BikeGrid items={bikes.slice(0, 3)} lang={lang} t={t} />
+        {featured.length ? <BikeGrid items={featured} lang={lang} t={t} /> : <p className="catalog-disclaimer">{t('No models are currently listed. Contact the shop for availability.', 'Hakuna modeli zilizoorodheshwa kwa sasa. Wasiliana na duka kuhusu upatikanaji.')}</p>}
       </div>
     </section>
     <section className="home-links paper-section" aria-labelledby="home-more-title">

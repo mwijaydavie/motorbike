@@ -1,3 +1,5 @@
+import { MODEL_IDS } from './ops/core.js';
+
 export type Language = 'en' | 'sw';
 export type LocalText = { en: string; sw: string };
 export const text = (en: string, sw: string): LocalText => ({ en, sw });
@@ -36,34 +38,34 @@ export interface Bike {
 
 export const bikes: Bike[] = [
   {
-    id: 'fh-125-xpress', brand: 'Fenghao', name: 'FH 125 Xpress', number: '125',
+    id: MODEL_IDS.xpress, brand: 'Fenghao', name: 'FH 125 Xpress', number: '125',
     cc: text('125 class', 'Daraja la 125'), category: 'street',
     image: '/media/fenghao-125.webp', imageType: 'reference', source: reel,
     referenceSource: 'https://fenghaomotor.en.made-in-china.com/product/UQHplPRbJDkN/China-Fenghao-125cc-Adult-Motorbikes-Scooters-Gasoline-Gas-Fuel-Systems-125cc-Motorcycle.html',
     detail: text('A Fenghao model featured by Pikipiki Altraware. A good place to start if you’re shopping for a bike for your daily trips around town. Watch our reel for a look at the Xpress.', 'Modeli ya Fenghao iliyoonyeshwa na Pikipiki Altraware. Kama unatafuta pikipiki ya safari zako za kila siku mjini, anza hapa. Tazama reel yetu kuiona Xpress.'),
   },
   {
-    id: 'fh-200-10', brand: 'Fenghao', name: 'FH-200-10', number: '200',
+    id: MODEL_IDS.adventure, brand: 'Fenghao', name: 'FH-200-10', number: '200',
     cc: text('200 class', 'Daraja la 200'), category: 'adventure',
     image: '/media/fenghao-200-silver.webp', imageType: 'reference',
     source: 'https://www.instagram.com/p/Dfh0q--jtRo/', referenceSource: maker200,
     detail: text('Featured by Pikipiki Altraware for hilly routes and longer trips. See the original post for photos of the FH-200-10 and contact us for current specs and availability.', 'Pikipiki Altraware imeionyesha kwa barabara za milimani na safari ndefu. Tazama chapisho la awali kuona picha za FH-200-10, kisha tuulize kuhusu vipimo na upatikanaji.'),
   },
   {
-    id: 'fh150-7', brand: 'Fenghao', name: 'FH150-7', number: '150',
+    id: MODEL_IDS.utility, brand: 'Fenghao', name: 'FH150-7', number: '150',
     cc: text('150 class', 'Daraja la 150'), category: 'utility',
     image: '/media/fenghao-fh150-7.webp', imageType: 'maker',
     source: 'https://gzfenghaomotor.com/products-_17/1154.html',
     detail: text('A work-bike design from the Fenghao manufacturer catalogue, shown here as a preview. Ask about the engine version and whether we can source it for you.', 'Pikipiki ya kazi kutoka kwenye katalogi ya mtengenezaji Fenghao, imeonyeshwa hapa kama mfano. Tuulize kuhusu toleo la injini na kama tunaweza kukutafutia.'),
   },
   {
-    id: 'motorcycle-180', name: '180 cc Motorcycle', number: '180',
+    id: MODEL_IDS.road180, name: '180 cc Motorcycle', number: '180',
     cc: text('180 cc', 'cc 180'), category: 'other',
     source: 'https://www.instagram.com/p/Dfy1LA3OdPL/', price: 'TSh 2,800,000', registration: true,
-    detail: text('Posted by Pikipiki Altraware with registration noted on 16 November 2026. The price below is from that post; confirm the current price and stock with us.', 'Ilichapishwa na Pikipiki Altraware tarehe 16 Novemba 2026, huku usajili ukitajwa. Bei iliyo hapa ni ya chapisho hilo; tuulize kuthibitisha bei ya sasa na upatikanaji.'),
+    detail: text('Posted by Pikipiki Altraware with registration noted on 16 November 2026. The original listing price is shown separately; ask us to confirm today’s price and stock.', 'Ilichapishwa na Pikipiki Altraware tarehe 16 Novemba 2026, huku usajili ukitajwa. Bei ya chapisho la awali imeonyeshwa tofauti; tuulize kuthibitisha bei ya leo na upatikanaji.'),
   },
   {
-    id: 'wanhoo-250', brand: 'Wanhoo', name: 'Wanhoo 250', number: '250',
+    id: MODEL_IDS.wanhoo, brand: 'Wanhoo', name: 'Wanhoo 250', number: '250',
     cc: text('250 cc', 'cc 250'), category: 'other',
     source: 'https://www.instagram.com/p/Dfy2oVpDoyP/', registration: true,
     detail: text('A 250 cc listing from Pikipiki Altraware with registration mentioned. Open the original post for photos or ask us for the current price and details.', 'Tangazo la pikipiki ya cc 250 kutoka Pikipiki Altraware, lenye maelezo ya usajili. Fungua chapisho la awali kuona picha au tuulize kuhusu bei na taarifa za sasa.'),
